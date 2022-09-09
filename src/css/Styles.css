@@ -1,0 +1,42 @@
+/* HomePage will always use the main Theme */
+:root{
+    --main-bg-color: #F9C901;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* .MuiAppBar-root{
+    box-shadow: none !important;
+} */
+
+.active-menu-item{
+    font-weight: bold;
+}
+.Logo-mainbar{
+    margin-right: 15px;
+}
+
+.mainbar-menu-item:hover{
+    cursor:pointer;
+}
+
+.main-initial-content{
+    /* background-color:var(--main-bg-color); */
+    background-image:url(/public/svg/HoneyWave.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.main-initial-content-title{
+    background: transparent;
+    width: 95%;
+    height:70vh;
+}
+.main-info{
+    background: var(--main-bg-color);
+}
