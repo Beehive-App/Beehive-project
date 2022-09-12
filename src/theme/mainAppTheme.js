@@ -23,7 +23,7 @@ export const mainAppTheme = createTheme({
     },
     success: {
       main: '#55ef5d',
-    },
+    }
   },
   props: {
     MuiButtonBase: {

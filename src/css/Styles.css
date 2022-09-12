@@ -9,12 +9,15 @@
     box-sizing: border-box;
 }
 
-/* .MuiAppBar-root{
-    box-shadow: none !important;
-} */
+
+html{height: 100%;}
+body{height:100%;}
+#root{height: 100%;}
+
 
 .active-menu-item{
     font-weight: bold;
+    color: var(--main-bg-color) !important;
 }
 .Logo-mainbar{
     margin-right: 15px;
@@ -24,9 +27,9 @@
     cursor:pointer;
 }
 
-.main-initial-content{
+.main-initial-content, .main-requests{
     /* background-color:var(--main-bg-color); */
-    background-image:url(/public/svg/HoneyWave.svg);
+    background-image:url(/svg/WhiteToHoney-wave.svg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -39,4 +42,33 @@
 }
 .main-info{
     background: var(--main-bg-color);
+}
+
+.main-info{
+    background-image:url(/svg/HoneyToWhite-Wave.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.main-beehive-info{
+    font-weight: bold !important;
+}
+
+.mainbar-menu-link{
+    text-decoration: none;
+    color: black;
+    transition: all .3s ease;
+}
+.mainbar-menu-link:hover{
+    color: var(--main-bg-color);
+    transform:scale(1.05);
+}
+
+.login-form{
+    width: 50%;
+}
+
+.main-login-form{
+    border-radius: 10px !important;
 }

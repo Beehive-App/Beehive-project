@@ -1,17 +1,36 @@
 import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material'
 import { Box } from '@mui/system';
 import LoginIcon from '@mui/icons-material/Login';
-import React from 'react'
+import React, { useRef } from 'react'
+import { Link } from 'react-router-dom';
 
 //TODO: THIS VARS SHOULD BE PASSED AS PROPS TO THE MAINBAR COMPONENT
 //INFO : Esto es para que en el proyecto final, muestre como pasandole propiedades puedo generarme este componente y reutilizarlo en otra app cualquiera. (vendría de las props, igual que los elementos del menú (serán los módulos que el usuario tenga activos en base de datos.))
-const menuItems = ['Home','Información','Contacto','Solicitudes'];
 const [LogoIcon,LogoText] = [{srcImg:'/svg/BeehiveLogoHoney-02.svg',altImg:'Beehive Logo Icon'},{srcImg:'/svg/BeehiveText-02.svg',altImg:'Beehive Logo Text'}] 
+const menuItems = [
+  {
+  name:"Home",
+  path:'/home'
+  },
+  {
+  name:"Contacto",
+  path:'/home/contact'
+  },
+  {
+  name:"Acceso",
+  path:'/home/login'
+  },
+  {
+  name:"Solicitudes",
+  path:'/home/requests'
+  },
+]
+
 
 export const MainBar = () => {
   return (
     <>
-        <AppBar position="static" sx={{backgroundColor:'#ffffff'}}>
+        <AppBar position="static" sx={{backgroundColor:'#ffffff',boxShadow:'none !important'}}>
         <Toolbar sx={{height:'90px'}}>
             <Grid container  
                   spacing={0}
@@ -39,7 +58,7 @@ export const MainBar = () => {
                       className="Beehive-mainbar-menu" 
                       sx={{width:'50%',display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center'}} >
                         {
-                          menuItems.map(item=>{
+                          menuItems.map(({name:item,path})=>{
                             let active = false; 
 
                             //TODO: Hacer la lógica para leer la url y ver si coincide con la key uno de los elementos del array de objetos de menú. 
@@ -55,20 +74,8 @@ export const MainBar = () => {
                                     display:'flex',
                                     flexDirection:"row"
                                    }}  >
-                                <Typography 
-                                fontSize={{xs:'0.7rem',md:'1rem',lg:'1.2rem'}} 
-                                sx={{
-                                    fontWeight:(active?'bold':''),
-                                    color:(active ?'primary.main':''),
-                                    transition:".3s ease",
-                                    "&:hover": {
-                                      color:'primary.main',
-                                      transform:'scale(1.05)'
-                                    }
-                                    }}
-                                >
-                                  {item}
-                                </Typography>
+                                    {/*TODO: Menú responsive */}
+                                <Link className={(active?"active-menu-item ":"")+"mainbar-menu-link"} to={path}>{`${item}`}</Link>
                               </Box>
                             )
                           })
