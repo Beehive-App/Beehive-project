@@ -1,7 +1,12 @@
-import React from 'react'
+import { BeehiveAppLayout } from '../layout/BeehiveAppLayout';
+import { MainView } from '../views/MainView';
 
 export const TestPage = () => {
   return (
-    <div>testPage</div>
-  )
-}
+    <>
+      <BeehiveAppLayout>
+          <MainView />
+      </BeehiveAppLayout>
+    </>
+  );
+};
