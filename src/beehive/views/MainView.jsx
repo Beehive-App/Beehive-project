@@ -6,8 +6,8 @@ import { StarOutline } from '@mui/icons-material';
 export const MainView = () => {
 
     const user = {
-        name: 'Lucía',
-        surname:'Márquez Martínez',
+        name: 'Ainara',
+        surname:'Escribano',
         s:'F', 
         favSections:[1,3,2]
     }
@@ -70,6 +70,7 @@ export const MainView = () => {
  
   return (
     <>
+
     <Grid
       container
       spacing={ 0 }
@@ -93,18 +94,7 @@ export const MainView = () => {
               )
             })}
           </Grid>
-            
-
-         
-
         </Grid>
-
-        {/* <Grid item xs={ 12 }>
-            <StarOutline sx={{ fontSize: 100, color: 'primary.main' }} />
-        </Grid>
-        <Grid item xs={ 12 }>
-            <Typography color="primary.main" variant='h5'>Selecciona o crea una entrada</Typography>
-        </Grid> */}
     </Grid>
 
     </>

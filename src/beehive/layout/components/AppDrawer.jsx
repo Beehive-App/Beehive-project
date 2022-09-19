@@ -4,7 +4,7 @@ import {Box, List, ListItem, ListItemText, ListItemButton} from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { Minimize as MinimizeIcon, MenuOpen as MenuOpenIcon, Home as HomeIcon, AssignmentTurnedIn as AssignmentTurnedInIcon , Settings as SettingsIcon, CalendarMonth as CalendarMonthIcon } from '@mui/icons-material';
-import { useDrawer } from '../Hooks/useDrawer';
+import { useDrawer } from '../../Hooks/useDrawer';
 
 const menuItems = [
   { icon: <HomeIcon />, name: 'Home' },
@@ -25,7 +25,7 @@ export const AppDrawer = () => {
 
   return (
     <Box>
-      <Drawer variant="permanent" open={open}  >
+      <Drawer variant="permanent" open={open} sx={{background:'primary.main'}}  >
         <Box alignItems="center" justifyContent="center" sx={{width:1, display:'flex'}}>
           <IconButton onClick={handleDrawerState} sx={{mt:2}}>
             {open ? <MinimizeIcon /> : <MenuOpenIcon />}

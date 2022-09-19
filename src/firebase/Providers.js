@@ -31,14 +31,11 @@ export const signInWithGoogle = async () =>{
 export const registerUserWithEmailPassword = async ({displayName,email,password})=>{
 
     try {
-        
+
         const resp = await createUserWithEmailAndPassword(FirebaseAuth, email, password); 
-        const {uid,photoURL} = resp.user;  
-
-        await updateProfile( FirebaseAuth.currentUser, { displayName } ); 
-
-
-        return {ok: true, uid,photoURL,email,displayName }
+        const {uid,photoURL,emailVerified} = resp.user;  
+        await updateProfile( FirebaseAuth.currentUser, { displayName } );
+        return {ok:true , uid,photoURL,email,displayName,emailVerified }
 
     } catch (error) {
 
@@ -53,9 +50,11 @@ export const loginUserWithEmailPassword = async({email,password})=>{
     try {
         const resp = await signInWithEmailAndPassword(FirebaseAuth,email,password); 
 
-        const {displayName,uid,photoURL} = resp.user;  
-    
-        return {ok: true, uid,photoURL,email,displayName}
+        console.log({resp});
+
+        const {displayName,uid,photoURL,emailVerified} = resp.user;  
+        
+        return {ok: true, uid,photoURL,email,displayName,emailVerified}
 
     } catch (error) {
         console.warn(error)

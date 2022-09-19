@@ -59,6 +59,7 @@ export const RegisterPage = () => {
 
   const onSubmit = async(e)=>{
     e.preventDefault(); 
+    
     setFormSubmited(true); 
 
     !!passwordValid && handleSnacks(passwordValid,"error");
@@ -66,6 +67,7 @@ export const RegisterPage = () => {
     !!displayNameValid && handleSnacks(displayNameValid,"error");
 
     if (!!emailValid && !!passwordValid && !!displayNameValid ) return;
+
     dispatch(startCreatingUserWithEmailPassword(formState));
   }
 
