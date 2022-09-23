@@ -1,35 +1,80 @@
-import { Box, Button, TextField, ThemeProvider } from '@mui/material'
-import { mainAppTheme } from '../../theme/mainAppTheme'
+import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from '../../hooks';
+import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
 import { HomeLayout } from '../Layout/HomeLayout'
+import { mainAppTheme } from '../../theme/mainAppTheme'
+import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material'
 import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
 
+const formData = {
+  email:'',
+  password:'',
+};
+
 export const LoginPage = () => {
+
+  const {email, password, onInputChange} = useForm(formData); 
+
+  const dispatch = useDispatch(); 
+  const {status} = useSelector(state=>state.auth);
+  const isAuthenticating = useMemo(()=> status === 'checking',[status])
+  
+  const onLoginGoogle = async(e)=>{
+    e.preventDefault(); 
+    dispatch(startGoogleSignIn());
+  }
+
+  const onSubmit = (e)=>{
+    e.preventDefault(); 
+    dispatch(startLoginWithEmailPassword(email,password)); 
+  }
+
   return (
     <>
     <ThemeProvider theme={mainAppTheme}>
       <HomeLayout>
-        <Box className="main-login-form" flexDirection="row" justifyContent="center" alignItems="center" sx={{display:'flex',width:1,height:'calc(100% - 90px)'}}>
-          <Box flexDirection="row" justifyContent="center" alignItems="center" margin="0 auto" sx={{ display:'flex',width:1/2,height:'80%',borderRadius:3,boxShadow:'11px 26px 117px -16px rgba(199,199,199,1)'}}>
-            <Box flexDirection="row" justifyContent="center" alignItems="center" sx={{display:'flex',width:'50%',height:"100%",backgroundColor:'primary.main',borderRadius:'10px 0 0 10px'}}>
-              <img src="/svg/BeehiveLogoBlack-02.svg" width="120px"/>
+        <Box className="main-login-form animate__fadeIn" flexDirection="row" justifyContent="center" alignItems="center" sx={{display:'flex',width:1,height:'calc(100% - 90px)'}}>
+          <Box flexDirection={{xs:'column',md:'row'}} justifyContent="center" alignItems="center" margin="0 auto" width={{xs:'80%',md:'50%'}} sx={{ display:'flex',height:'80%',borderRadius:3,boxShadow:'11px 26px 117px -16px rgba(199,199,199,1)'}}>
+            <Box padding={{xs:'5vh'}} flexDirection="row" justifyContent="center" alignItems="center" height={{xs:'15%',md:"100%"}} width={{xs:'100%',md:"50%"}} borderRadius={{xs:'10px 10px 0px 0',md:'10px 0 0 10px'}}sx={{display:'flex',backgroundColor:'primary.main'}}>
+              <img className="form-logo" src="/svg/BeehiveLogoBlack-02.svg"/>
             </Box>
-            <form className="login-form">
-              <TextField variant="standard" label="Email"/>
-              <TextField variant="standard" label="Contraseña"/>
-              <Button variant="contained" >
+            <form className="login-form animate__animated animate__fadeIn" onSubmit={onSubmit}>
+              <Typography variant="h4" fontWeight="bold">Login</Typography>
+              <TextField variant="standard" 
+                label="Email" 
+                type="email" 
+                name="email" 
+                onChange={onInputChange}
+                value={email}
+                sx={{width:1,mt:2}}
+                />
+              <TextField variant="standard" 
+                label="Contraseña" 
+                type="password" 
+                name="password" 
+                value={password}
+                onChange={onInputChange}
+                sx={{width:1,mt:2}}
+                />
+
+              <Button variant="contained" type="submit" disabled={(isAuthenticating)} sx={{width:1,mt:4}} >
                 Login
               </Button>
-              <Button variant="contained">
-                Entrar con google
-                <GoogleIcon />
-              </Button>
-              <Button variant="contained">
-                Entrar con Apple
-                <AppleIcon />
-              </Button>
+              <Box flexDirection="row" alignItems="center" justifyContent="space-between" sx={{mt:1,width:1,display: 'flex'}} >
+                <Button variant="contained" sx={{width:'49%'}} onClick={onLoginGoogle} disabled={(isAuthenticating)}>
+                <Typography fontSize={{lg:'.9rem'}} display={{xs:'none',lg:'block'}}>Entrar</Typography>
+                  <GoogleIcon sx={{mx:1}}/>
+                </Button>
+                <Button variant="contained" sx={{width:'49%'}} disabled={(isAuthenticating)}>
+                <Typography fontSize={{lg:'.9rem'}} display={{xs:'none',lg:'block'}}>Entrar</Typography>
+                  <AppleIcon sx={{mx:1}}/>
+                </Button>
+              </Box>
+              <Link className="form-link" to="/home/register">¿No tienes cuenta? Pulsa aquí para registrarte. </Link>
             </form>
-
           </Box>
         </Box>
       </HomeLayout>

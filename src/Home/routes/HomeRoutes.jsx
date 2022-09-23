@@ -11,8 +11,6 @@ export const HomeRoutes = () => {
             <Route path="/" element={<HomePage />}/>
             <Route path="login" element={<LoginPage />}/>
             <Route path="register" element={<RegisterPage />}/>
-
-            <Route path="/*" element={<Navigate to='/notFoundPage'/>}/>
         </Routes>
     
     </>
