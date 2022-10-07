@@ -9,6 +9,7 @@ import { BeehiveRouter } from "../beehive/router/BeehiveRouter";
 import { CheckingAuth } from "../global/components";
 import { useSelect } from "@mui/base";
 import { VerifyEmailPage } from "../global/Pages/VerifyEmailPage";
+import { startLoadingUserSections } from "../store/Tasks/thunks";
 
 export const AppRouter = () => {
 
@@ -24,6 +25,7 @@ onAuthStateChanged( FirebaseAuth, async(user)=>{
     const {uid,email,displayName,photoURL,emailVerified} = user; 
 
     dispatch(login({uid,email,displayName,photoURL,emailVerified})); 
+    dispatch(startLoadingUserSections(uid)); 
   } );
 }, []);
 

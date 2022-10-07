@@ -81,7 +81,7 @@ export const MainView = () => {
       alignItems="flex-start"
       justifyContent="flex-start"
       className="animate__animated animate__fadeIn animate__faster"
-      sx={{ minHeight: '93vh', backgroundColor: '', borderRadius: 0, px:10,py:5 }}
+      sx={{ minHeight: '93vh', borderRadius: 0, px:10,py:5 }}
     >
         <Grid item>
             <Typography variant="h3" sx={{ color: 'text.main', fontWeight: 'light' }}> {`Bienvenid${user.s=='F'? 'a' : (user.s=='M' ? 'o' : '@')} ${displayName}`}</Typography>   

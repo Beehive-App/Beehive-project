@@ -241,3 +241,59 @@ body{height:100%;}
   background-color: none;
   border-radius: 10px;
 }
+
+
+/* Tasks: */
+
+.tasks-wrapper{
+  overflow: scroll;
+}
+
+.tasks-wrapper::-webkit-scrollbar {
+  width: 1px;
+  background-color: none;
+}
+
+.tasks-wrapper::-webkit-scrollbar-thumb {
+  background-color: none;
+  border-radius: 10px;
+}
+
+
+
+/* TINY CALENDAR */
+
+.tinyCalendar-other-month{
+  color: rgba(26, 26, 26, 0.413);
+}
+
+.tinyCalendar-current-month{
+
+  /* border: #454545 1px solid; */
+  border-radius: 999px;
+  color: rgb(0, 0, 0);
+  /* background: #313131; */
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+.tinyCalendar-current-month:hover{
+  border: #fafafa solid 1px;
+  color: black;
+  background-color: #F9C901;
+}
+
+.tinyCalendar-dayWeekNames{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: #000000;
+  background: #F9C901;
+  border-radius: 999px;
+}
+
+.tinyCalendar-active-day{
+  background-color: #F9C901; 
+}

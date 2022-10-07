@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { BeehiveMainPage } from '../BeehiveMainPage'
-import { TasksMainView } from '../modules/tasks/views/TasksMainView'
+import { TasksPage } from '../modules/tasks/TasksPage'
+
 
 export const BeehiveRouter = () => {
 
   return (
     <Routes>
             <Route path="/" element={<BeehiveMainPage />}/>
-            <Route path="/tasks" element={<TasksMainView />}/>
+            <Route path="/tasks" element={<TasksPage />}/>
             {/* <Route path="test" element={<TestPage />}/> */}
             <Route path="/*" element={<Navigate to='/'/>}/>
     </Routes>

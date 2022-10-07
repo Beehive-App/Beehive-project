@@ -2,13 +2,10 @@ import { Box, Button, Snackbar, TextField, ThemeProvider, Typography } from '@mu
 import React, { useMemo, useState } from 'react'
 import { HomeLayout } from '../Layout/HomeLayout'
 import { Link, useNavigate } from 'react-router-dom';
-import GoogleIcon from '@mui/icons-material/Google';
-import AppleIcon from '@mui/icons-material/Apple';
 import { mainAppTheme } from '../../theme';
-import { registerUserWithEmailPassword } from '../../firebase/Providers';
 import {useForm} from '../../hooks';
 import { useDispatch, useSelector } from 'react-redux';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { startCreatingUserWithEmailPassword } from '../../store/auth';
 
 const formData = {

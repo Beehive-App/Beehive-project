@@ -1,15 +1,13 @@
 import { AddCircle } from '@mui/icons-material';
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Divider, IconButton, Typography } from '@mui/material';
-import React from 'react'
+import { Box, Card, CardActionArea, CardActions, CardContent, Divider, IconButton, Typography } from '@mui/material';
+
 import { useRef } from 'react';
 
-export const SectionCard = ({section}) => {
-  
-  const {title,description,color,tasks=[]} = section;    
-  
+export const SectionCard = ({id,sectionTitle,sectionDescription,sectionColor,tasks=[]}) => {
 
+  //TODO: Lógica si no tiene tareas. 
   /* Filter array uncompleted task to get the next task in section. */
-  const tasksUncompleted = tasks.filter(task => !task.taskCompleted);
+  /* const tasksUncompleted = tasks.filter(task => !task.taskCompleted);
   tasksUncompleted.sort((a,b)=>{ 
     return a.taskDatetime - b.taskDatetime
   })
@@ -17,7 +15,7 @@ export const SectionCard = ({section}) => {
   const optionsDay = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   const optionsHourMin = {timezone: 'Europe/Madrid',hour:'numeric',minute:'2-digit'};
   const taskDate = new Date(taskDatetime).toLocaleDateString("es-ES",optionsDay) +' '+ new Date(taskDatetime).toLocaleTimeString("es-ES",optionsHourMin); 
-
+ */
 
   /* UseRef de la nueva nota: */
   const newSectionRef = useRef(); 
@@ -30,15 +28,15 @@ export const SectionCard = ({section}) => {
 
   return (
     <>
-    <Card sx={{ width: 350,height:450,m:2}}>
+    <Card key={id} sx={{ width: 350,height:450,m:2}}>
       <CardActionArea className="scroll-sections" sx={{overflowY:'scroll',height:400 }}>
         <CardContent>
           <Box padding={1}>
             <Typography gutterBottom variant="h5" component="div" fontWeight={800}>
-              {title}
+              {sectionTitle}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {description}
+              {sectionDescription}
             </Typography>
           </Box>
           <Divider />
@@ -48,7 +46,7 @@ export const SectionCard = ({section}) => {
             <Typography gutterBottom variant="h6" component="div">
               Próxima tarea:
             </Typography>
-            <Typography fontSize={{md:'1.3rem'}} fontWeight={700}>
+            {/* <Typography fontSize={{md:'1.3rem'}} fontWeight={700}>
               {taskTitle}:
             </Typography>
             <Typography fontSize={{md:'1.1rem'}}>
@@ -56,7 +54,7 @@ export const SectionCard = ({section}) => {
             </Typography>
             <Typography fontSize={{md:'.9rem'}}>
               Fecha: {taskDate} 
-            </Typography>
+            </Typography> */}
           </Box>
         </CardContent>
       </CardActionArea>

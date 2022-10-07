@@ -1,136 +1,80 @@
-import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, IconButton, InputLabel, List, MenuItem, Select, TextField, ThemeProvider, Typography, useMediaQuery, useTheme } from '@mui/material'
-import React, { useRef } from 'react'
-import { useState } from 'react'
+import { Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Drawer, FormControl, IconButton, InputLabel, List, MenuItem, Select, TextField, ThemeProvider, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { useRef,useState } from 'react'
 import { BeehiveAppLayout } from '../../../layout/BeehiveAppLayout'
 import { SectionCard } from '../components/SectionCard'
 import { SidebarSection } from '../components/SidebarSection'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useForm } from '../../../../hooks/useForm'
+import { startCreatingNewSection } from '../../../../store/Tasks/thunks'
+import { useDispatch, useSelector } from 'react-redux'
+import { useSnackbar } from 'notistack'
+import { useNavigate } from 'react-router-dom'
+import { SectionMobile } from '../components/SectionMobile'
+import { CastConnectedOutlined, Favorite, FavoriteBorder, HelpOutline, QuestionMark } from '@mui/icons-material'
+import { sectionColors } from '../../../../data'
 
-//data bd
-const sect1 = {
-  title:"Section Test",
-  description:"For Testing",
-  color:"linear-gradient(45deg, rgba(255,12,0,1) 0%, rgba(255,149,0,1) 100%)",
-  tasks:[
-    {
-      taskTitle:"Walk the dog",
-      taskDescription:"none",
-      taskPriority:3,
-      taskCompleted:false,
-      taskLabels:[''],
-      taskDatetime: 1128367890,
-    },
-    {
-      taskTitle:"Go shopping",
-      taskDescription:"With my son",
-      taskPriority:1,
-      taskCompleted:true,
-      taskLabels:[''],
-      taskDatetime:1118264890,
-    }
-  ]
-}
-const sect2 = {
-  title:"Section Test number 2",
-  description:"For Testing various LIs",
-  color:"linear-gradient(45deg, rgba(170,0,255,1) 23%, rgba(42,68,255,1) 100%)",
-  tasks:[
-    {
-      taskTitle:"Walk the dog",
-      taskDescription:"none",
-      taskPriority:3,
-      taskCompleted:false,
-      taskLabels:[''],
-      taskDatetime: 1128367890,
-    },
-    {
-      taskTitle:"Go shopping",
-      taskDescription:"With my son",
-      taskPriority:1,
-      taskCompleted:true,
-      taskLabels:[''],
-      taskDatetime:1118264890,
-    }
-  ]
-}
-const sect3 = {
-  title:"Section Test but with a longer title too see",
-  description:"For Testing a longer description and title and how it fits on the sidebar",
-  color:"linear-gradient(45deg, rgba(91,255,123,1) 0%, rgba(121,255,224,1) 100%)",
-  tasks:[
-    {
-      taskTitle:"Walk the dog",
-      taskDescription:"none",
-      taskPriority:3,
-      taskCompleted:false,
-      taskLabels:[''],
-      taskDatetime: 1128367890,
-    },
-    {
-      taskTitle:"Go shopping",
-      taskDescription:"With my son",
-      taskPriority:1,
-      taskCompleted:true,
-      taskLabels:[''],
-      taskDatetime:1118264890,
-    }
-  ]
-}
-const sect4 = {
-  title:"Section Test but with a longer title too see",
-  description:"For Testing a longer description and title and how it fits on the sidebar",
-  color:"#ff00cf",
-  tasks:[
-    {
-      taskTitle:"Walk the dog",
-      taskDescription:"",
-      taskPriority:3,
-      taskCompleted:false,
-      taskLabels:[''],
-      taskDatetime: 1663966805592,
-    },
-    {
-      taskTitle:"Go shopping",
-      taskDescription:"With my son",
-      taskPriority:1,
-      taskCompleted:false,
-      taskLabels:[''],
-      taskDatetime:1663966768196,
-    },
-    {
-      taskTitle:"Sacar a Yago",
-      taskDescription:"",
-      taskPriority:1,
-      taskCompleted:false,
-      taskLabels:[''],
-      taskDatetime:1663967572046,
-    },
-    {
-      taskTitle:"test3",
-      taskDescription:"With my son",
-      taskPriority:1,
-      taskCompleted:false,
-      taskLabels:[''],
-      taskDatetime:1663967587590,
-    }
-  ]
-}
+
 //data de bd
-const userUnlockedColors = [{name:'Pink',color:'#ff00cf'},{name:'Gradient 1',color:'linear-gradient(45deg, rgba(91,255,123,1) 0%, rgba(121,255,224,1) 100%)'},{name:'Gradient 2',color:'linear-gradient(45deg, rgba(170,0,255,1) 23%, rgba(42,68,255,1) 100%)'},{name:'Gradient 3',color:'linear-gradient(45deg, rgba(255,12,0,1) 0%, rgba(255,149,0,1) 100%)'}]
+const userUnlockedColors = sectionColors;
+
+//Form data:
+
+const formData = {
+    sectionTitle:'',
+    sectionDescription:'',
+    sectionColor:'',
+    sectionFav:false,
+}
+
+//Form Validations
+
+const formValidations = {
+  sectionTitle: [(value)=>value.length>=1,'El título es obligatorio.']
+}
 
 export const TasksMainView = () => {
 
-
   const newSectionRef = useRef(); 
+  const dispatch = useDispatch(); 
 
+  const MobileView = useMediaQuery('(max-width:600px)');
+
+  const {userSections} = useSelector(state=>state.tasks); 
+
+  //Form 
+  const {sectionTitleValid,sectionFav,sectionTitle, sectionDescription, setFormState, onInputChange, formState} = useForm(formData,formValidations); 
+  const [formSubmited, setFormSubmited] = useState(false); 
+
+  //Tooltip : 
+  const [openTooltip, setOpenTooltip] = useState(false); 
+
+  const handleTooltipClose = ()=>{ setOpenTooltip(false); }
+  const handleTooltipOpen  = ()=>{ setOpenTooltip(true); }
+
+  //Checkbox fav: 
+  const [favChecked, setFavChecked] = useState(false)
+  const handleFavCheckboxChange = ()=>{
+    setFavChecked(!favChecked);
+    setFormState({
+      ...formState,
+      sectionFav:!favChecked
+    });
+  }
 
   //Abrir y cerrar el dialogo para añadir una sección.
   const [open, setOpen] = useState(false); 
   const handleDialogState = ()=>{
       setOpen(!open); 
-      if(!open) setColor(''); 
+      if(!open){
+        setColor(''); 
+        setFavChecked(false);
+        setFormState({
+          sectionTitle:'',sectionDescription:'',sectionColor:'', sectionFav:false
+        });
+      }
   }
+
   //responsive dialog
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -138,18 +82,21 @@ export const TasksMainView = () => {
   //Cambiar el valor del select para que se muestre. 
   const [color,setColor] = useState(''); 
   const handleColorChange = (e)=>{
-    setColor(e.target.value); 
+    setColor(e.target.value);
+    setFormState({
+      ...formState,
+      sectionColor:e.target.value,
+    });
   }
-
-
   /* Scrolls sections when needed: */
-  const [scroll, setScroll] = useState(0); 
+  const [scroll, setScroll] = useState(0);
   const handleSectionScrolling = ()=>{
-    const [scrollDiv] = document.getElementsByClassName('scroll-sections'); 
+    const [scrollDiv] = document.getElementsByClassName('scroll-sections');
     scrollDiv.scroll({
       top: scroll,
       behavior: 'smooth'
-    }) 
+    })
+
     //TODO: Mirar porque hay un punto que se bloquea, no se si es casualidad o al llegar a un punto concreto de espacios. (cuando scrollHeight = 778, el máximo que llega es a 777)
     
     if(scrollDiv.offsetHeight + scrollDiv.scrollTop + 100 >= scrollDiv.scrollHeight)
@@ -164,23 +111,45 @@ export const TasksMainView = () => {
       })  
     }
   }
+  //snackbar section created.
+  const {enqueueSnackbar} = useSnackbar();
+
+  //Submit
+  const onNewSection = async()=>{
+    setFormSubmited(true); 
+
+    !!sectionTitleValid && enqueueSnackbar(sectionTitleValid,{variant:"error"});
+    if (!!sectionTitleValid) return;
+
+    const {ok} = await dispatch( startCreatingNewSection(formState) ) ; 
+    setOpen(false); 
+
+    if (!ok) enqueueSnackbar('No se ha podido crear el espacio.',{variant:'error'}); 
+    else enqueueSnackbar(`El espacio "${sectionTitle}" se ha creado correctamente`,{variant:'success'});
+
+
+  }
 
   return (
     <>
-        <BeehiveAppLayout>
-            <Box className="main-tasks-container" 
+            <Box className="main-tasks-container animate__animated animate__fadeIn" 
             sx={{
                     height:'calc(100% - 64px)',
                     width:1,
                     display:'flex'
                 }}>
+                  
+              {/*INFO: VISTA PC*/}
               {/* DRAWER CON TODAS LAS SECCIONES Y POSIBILIDAD DE CREAR NUEVAS */}
               <Box className="tasks-drawer"
+                  display={{xs:'none',md:'flex'}}
                    sx={{
+                    flexDirection:'column',
                     height:'100%',
                     width:"300px",
-                    background:'',
-                    borderRight:'1px solid #eeeeee'
+                    background:'white',
+                    borderRight:'1px solid #eeeeee',
+
                    }}
               > 
                 {/* Sidebar Title */}
@@ -195,11 +164,11 @@ export const TasksMainView = () => {
                 <Box height={350} className="scroll-sections" sx={{overflowY:"scroll",direction:'rtl'}}>
                    <List >
                     {/* FOREACH / MAP ARRAY CON LAS SECCIONES */}
-                    <SidebarSection {...sect1} />
-                    <SidebarSection {...sect2} />
-                    <SidebarSection {...sect3} />
-                    <SidebarSection {...sect4} />
-
+                    {
+                      userSections.map(sect=>{
+                      return <SidebarSection key={sect.id} {...sect} />
+                    })
+                    }
                    </List>
                 </Box>
                 <Box sx={{width:1,display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',my:3}}>
@@ -228,39 +197,82 @@ export const TasksMainView = () => {
                    
                 </Box>
               </Box>
+              {/* Secciones fav */}
               <Box className="tasks-content scroll-sections"
                     sx={{
                       height:'100%',
                       width:"calc(100% - 300px)",
                       background:'',
                       padding:5,
-                      display:'flex',
+                      display:MobileView ? 'none' : 'flex',
                       flexDirection:'row',
                       flexWrap:'wrap',
                       justifyContent:'flex-start',
                       overflowY:'scroll',
+                      background:"#FDFDFD"
                       
                     }}
                 >
                   {/* array map con sections del user traíadas de bd. */}
-                    <SectionCard section={sect4} />
-                    <SectionCard section={sect1} />
-                    <SectionCard section={sect2} />
-                    <SectionCard section={sect3} />
-                    <SectionCard section={sect4} />
-                    <SectionCard section={sect2} />
-                    <SectionCard section={sect3} />
-                    <SectionCard section={sect1} />
-                    <SectionCard section={sect2} />
-                    <SectionCard section={sect1} />
 
+                    {
+                      userSections.map(sect=>{ 
+                        return (sect.sectionFav) ? <SectionCard key={sect.id} {...sect} /> : <></>; 
+                      })
+
+                    }
+              </Box>
+              
+              {/*INFO: VISTA Móvil: */}
+              <Box
+                sx={{display:MobileView ? 'flex' : 'none',flexDirection:'column',padding:5,width:1,}}
+              >
+                  <Typography variant="h5">
+                    Tus espacios de tareas: 
+                  </Typography>
+                  <Divider />
+
+                  <Box height={700} className="scroll-sections" sx={{overflowY:"scroll",direction:'rtl'}}>
+                    <List>
+                      {/* FOREACH / MAP ARRAY CON LAS SECCIONES */}
+
+                      {
+                        userSections.map(sect=>{
+                        return sect.sectionFav &&  <SectionMobile key={sect.id} {...sect} />
+                      })
+                      }
+
+                      {
+                        userSections.map(sect=>{
+                        return !sect.sectionFav && <SectionMobile key={sect.id} {...sect} />
+                      })
+                      }
+                    </List>
+                  </Box>
+                  <Box width={1} minHeight={100} flexDirection="row" alignItems="center" justifyContent='center' padding={{md:2}} background="red" sx={{display:'flex'}}>
+                   
+                   <IconButton ref={newSectionRef} onClick={handleDialogState}>
+                    <AddCircleIcon color="primary" />
+                   </IconButton>
+                    <Typography fontSize="19px" 
+                              onClick={()=>{newSectionRef.current.click()}}
+                              ml={1} 
+                              color="text.primary" 
+                              sx={{cursor:'pointer',
+                              transition:'all .5s ease',
+                                  '&:hover':{
+                                    color:'primary.main',
+                                    transform:'scale(1.08)'
+                                  }
+                              }}>Añadir espacio</Typography>
+                </Box>
               </Box>
             </Box>
 
             {/* Dialogo de creación de Secciones nuevas: */}
             <Dialog open={open} onClose={handleDialogState} maxWidth="sm" fullWidth fullScreen={fullScreen}>
-              <DialogTitle mt={2}>Crear nuevo espacio de tareas:</DialogTitle>
-              <DialogContent sx={{padding:'3vh'}}>
+              <DialogTitle mt={2} fontSize={'1.7rem'}>Crear nuevo espacio de tareas:</DialogTitle>
+              <DialogContent sx={{padding:'3vh'}} >
                 <TextField
                   autoFocus
                   margin="dense"
@@ -268,6 +280,10 @@ export const TasksMainView = () => {
                   type="text"
                   fullWidth
                   variant="standard"
+                  name="sectionTitle" 
+                  value={sectionTitle}
+                  onChange={onInputChange}
+                  error={!!sectionTitleValid && formSubmited}
                 />
                 <TextField
                   autoFocus
@@ -276,6 +292,9 @@ export const TasksMainView = () => {
                   type="text"
                   fullWidth
                   variant="standard"
+                  name="sectionDescription" 
+                  value={sectionDescription}
+                  onChange={onInputChange}
                 />
                 <FormControl fullWidth sx={{marginTop:2,padding:'0 !important'}}>
                     <InputLabel id="section-color">Color</InputLabel>
@@ -304,14 +323,24 @@ export const TasksMainView = () => {
                     }
                   </Select>
                 </FormControl>
+                <Typography mt={5}>
+                  ¿Establecer como espacio favorito?
+                  <Tooltip arrow 
+                  onClose={handleTooltipClose}
+                  open={openTooltip}
+                  title="Al establecer un espacio como favorito saldrá por encima de los demás y se añadirá a la sección de favoritos en vista de ordenador.">
+                     <IconButton onClick={handleTooltipOpen}>
+                      <HelpOutline />
+                     </IconButton>
+                  </Tooltip>
+                </Typography>
+                <Checkbox checked={favChecked} onChange={handleFavCheckboxChange} icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
               </DialogContent>
               <DialogActions sx={{padding:'3vh 2vh',}}>
                 <Button onClick={handleDialogState}>Cancelar</Button>
-                <Button variant="contained" >Crear espacio</Button>
+                <Button variant="contained" onClick={onNewSection} >Crear espacio</Button>
               </DialogActions>
             </Dialog>
-
-        </BeehiveAppLayout>
     </>
   )
 }

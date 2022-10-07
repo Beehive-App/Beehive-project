@@ -1,18 +1,29 @@
-import { Box, Grid, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { useDispatch } from 'react-redux';
 import React, { useMemo } from 'react'
+import { Box, Grid, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { setActiveSection } from '../../../../store/Tasks/tasksSlice';
 
-export const SidebarSection = ({title='',description,color="primary.main",tasks}) => {
+export const SidebarSection = ({sectionTitle='',sectionDescription,sectionColor="primary.main",id,tasks}) => {
+
+    const dispatch = useDispatch(); 
+    
     const newTitle = useMemo(()=>{
-        return title.length > 25 ? title.substring(0, 25)+'...' : title;
-    },[title]); 
+        return sectionTitle.length > 25 ? sectionTitle.substring(0, 25)+'...' : sectionTitle;
+    },[sectionTitle]); 
+
     const newDescription = useMemo(()=>{
-        return description.length > 25 ? description.substring(0, 45)+'...' : title;
-    },[description]); 
+        return sectionDescription.length > 45 ? sectionDescription.substring(0, 45)+'...' : sectionDescription;
+    },[sectionDescription]); 
+
+    const onSetActiveSection = ()=>{
+        //TODO: Cambiar tasks al array que traiga desde bd.    
+        dispatch(setActiveSection({sectionTitle,sectionDescription,sectionColor,id,tasks}))
+    }
 
     return (
-        <ListItem disablePadding sx={{direction:'ltr'}}>
-        <ListItemButton >
-            <Box width="30px" height="30px" sx={{background:color}} borderRadius='999px' position={'absolute'}></Box>
+        <ListItem key={id} disablePadding sx={{direction:'ltr'}}>
+        <ListItemButton onClick={onSetActiveSection} >
+            <Box width="30px" height="30px" sx={{background:sectionColor}} borderRadius='999px' position={'absolute'}></Box>
             <Grid container direction="column" ml={'45px'}>
                 <ListItemText primary={newTitle}/>
                 <ListItemText secondary={newDescription}/>

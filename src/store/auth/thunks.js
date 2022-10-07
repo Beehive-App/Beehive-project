@@ -1,6 +1,7 @@
 import { sendEmailVerification } from "firebase/auth";
 import { FirebaseAuth } from "../../firebase/config";
-import { loginUserWithEmailPassword, logoutFirebase, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/Providers";
+import {loginUserWithEmailPassword, logoutFirebase, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/Providers";
+import { resetUserSections, unsetActiveSection } from "../Tasks/tasksSlice";
 import { checkCredentials,login,logout } from "./"
 
 //Check if user is authenticated, disable buttons and other functions. 
@@ -13,12 +14,14 @@ export const checkingAuth = ()=>{
 //Auth Via Google: 
 export const startGoogleSignIn =()=>{
     return async(dispatch)=>{
-       await dispatch(checkCredentials()); 
+      await dispatch(checkCredentials()); 
        const result = await signInWithGoogle();
        if(!result.ok) return dispatch( logout( result.errorMessage ) );
+        const {uid} = result; 
        dispatch(login(result));
     }
 }
+
 
 //Auth Via Email and password:
 /* LOGIN */
@@ -39,7 +42,7 @@ export const startCreatingUserWithEmailPassword = ({displayName,email,password})
         //TODO: SEND EMAIL VERIFICATION LINK. 
         dispatch( checkCredentials() ); 
         const { ok, uid, photoURL,emailVerified,errorMessage }  = await registerUserWithEmailPassword({displayName,email,password}); 
-        
+
         await sendEmailVerification(FirebaseAuth.currentUser); 
 
         if(!ok) return dispatch( logout({ errorMessage }) ); 
@@ -54,6 +57,8 @@ export const startLogOut =()=>{
         await logoutFirebase();
         
         dispatch(logout()); 
+        dispatch(resetUserSections()); 
+        dispatch(unsetActiveSection());
         //TODO: CLEAR USER INFO AND TASKS....
     }
 }

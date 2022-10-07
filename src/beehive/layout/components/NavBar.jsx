@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { startLogOut } from '../../../store/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTemporalDrawer } from '../../Hooks/useTemporalDrawer';
-import { AppBar, Toolbar, List, ListItem,ListItemButton, Avatar, Box, Menu, MenuItem, Divider, ListItemIcon, IconButton, Tooltip, Button, Drawer, ListItemText, Typography } from '@mui/material';
+import { AppBar, Toolbar, List, ListItem,ListItemButton, Avatar, Box, Menu, MenuItem, Divider, ListItemIcon, IconButton, Tooltip, Button, Drawer, ListItemText, Typography, useMediaQuery } from '@mui/material';
 import { menuItems } from '../../../data';
 import { AvatarOnline } from './AvatarOnline';
 import { Logout, Settings, Info, HelpOutline, Minimize as MinimizeIcon, MenuOpen as MenuOpenIcon } from '@mui/icons-material';
@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 export const NavBar = () => {
 
   const dispatch = useDispatch(); 
+  const MobileView = useMediaQuery('(max-width:600px)');
 
   //show user first letter / google photo
   // const {displayName} = useSelector(state => state.auth); 
@@ -20,9 +21,8 @@ export const NavBar = () => {
   const handleLogOut = ()=>{
      dispatch(startLogOut()); 
    }
-
    /* TEMPORAL DRAWER */
-   const {open:openDrawer, toggleDrawer} = useTemporalDrawer();
+   const {open:openDrawer, toggleDrawer} = useTemporalDrawer(MobileView);
   
   /* MENÚ */
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,18 +33,21 @@ export const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-
-
+  
+  const handleTest = ()=>{
+   
+  }
 
   return (
     <>
       <AppBar position="static" sx={{width: 1, display:'flex', alignItems:'center'}}>
         <Box sx={{width:1 }}>
-          <Toolbar disableGutters sx={{ justifyContent: 'space-between',width:1,px:4 }}>
-              <IconButton onClick={toggleDrawer(true)}>
+          <Toolbar disableGutters sx={{ justifyContent: 'space-between',width:1,px:4,boxShadow:'0px 16px 17px -15px rgba(0,0,0,0.18) !important', }}>
+              
+              <IconButton onClick={!MobileView ? toggleDrawer(true) : handleTest} sx={{display:MobileView ? 'none' : 'flex'}}>
                 <MenuIcon sx={{color:'black'}} />
-              </IconButton>
+              </IconButton> 
+
               <img src="/svg/BeehiveLogoBlack-02.svg" width="50px"   />
 
               {/* Dropdown user menu in avatar. */}
@@ -133,43 +136,45 @@ export const NavBar = () => {
           Salir de la App
         </MenuItem>
       </Menu>
-      {/* Drawer */}
-      <Drawer
-            anchor='left'
-            open={openDrawer}
-            onClose={toggleDrawer(false)}
-        >
-          <Box alignItems="center" justifyContent="center" sx={{display:'flex',width:1,minHeight:'7vh',backgroundColor:"primary.main"}}>
-            <img src="/svg/BeehiveText-02.svg" width="110"/>
-          </Box>
-           <List sx={{height:'100%',display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',width:1}}>
 
-            {
-              menuItems.map(({icon,title,url})=>{
-                const ref = useRef(); 
-                return(
-                    <ListItem key={parseInt(Math.random()*1000)} className="DrawerItem" disablePadding sx={{ display: 'block',width:1 }}>
-                    <ListItemButton
-                      sx={{
-                        minHeight: 48,
-                        px: 2.5,
-                      }}
-                      onClick={()=>{ref.current.click()}}
-                    >
-                      <ListItemIcon
+      {/* Drawer in mobile, not necessary. */}
+        <Drawer
+              anchor='left'
+              open={openDrawer}
+              onClose={toggleDrawer(false)}
+              sx={{display:(MobileView)?'none':'flex'}}
+          >
+            <Box alignItems="center" justifyContent="center" sx={{display:'flex',width:1,minHeight:'7vh',backgroundColor:"primary.main"}}>
+              <img src="/svg/BeehiveText-02.svg" width="110"/>
+            </Box>
+            <List sx={{height:'100%',display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',width:1}}>
+
+              {
+                menuItems.map(({icon,title,url})=>{
+                  const ref = useRef(); 
+                  return(
+                      <ListItem key={parseInt(Math.random()*1000)} className="DrawerItem" disablePadding sx={{ display: 'block',width:1 }}>
+                      <ListItemButton
                         sx={{
-                          justifyContent: 'center',
+                          minHeight: 48,
+                          px: 2.5,
                         }}
+                        onClick={()=>{ref.current.click()}}
                       >
-                        {icon}
-                      </ListItemIcon>
-                      <Link ref={ ref } className="Beehive-menu-item" to={`${url}`}>{title}</Link>
-                    </ListItemButton>
-                  </ListItem>
-                )
-              })
-            }
-            </List>
+                        <ListItemIcon
+                          sx={{
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {icon}
+                        </ListItemIcon>
+                        <Link ref={ ref } className="Beehive-menu-item" to={`${url}`}>{title}</Link>
+                      </ListItemButton>
+                    </ListItem>
+                  )
+                })
+              }
+              </List>
         </Drawer>
     </>
   );
