@@ -5,8 +5,9 @@ export const TestPage = () => {
   return (
     <>
       <BeehiveAppLayout>
-          <MainView />
+          TESTS
       </BeehiveAppLayout>
     </>
   );
+  
 };

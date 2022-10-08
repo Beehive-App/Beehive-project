@@ -1,14 +1,17 @@
 import { Divider, Grid, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { useSelector } from 'react-redux';
 import { FavCard } from '../components/FavCard';
 import { StarOutline } from '@mui/icons-material';
 
 export const MainView = () => {
 
+
+    const {displayName} = useSelector(state=>state.auth);
+
     const user = {
-        name: 'Lucía',
-        surname:'Márquez Martínez',
-        s:'F', 
+        name: '',
+        surname:'',
+        s:'g', 
         favSections:[1,3,2]
     }
 
@@ -70,16 +73,18 @@ export const MainView = () => {
  
   return (
     <>
+
     <Grid
       container
       spacing={ 0 }
       direction="column"
       alignItems="flex-start"
       justifyContent="flex-start"
-      sx={{ minHeight: '93vh', backgroundColor: '', borderRadius: 0, px:10,py:5 }}
+      className="animate__animated animate__fadeIn animate__faster"
+      sx={{ minHeight: '93vh', borderRadius: 0, px:10,py:5 }}
     >
         <Grid item>
-            <Typography variant="h3" sx={{ color: 'text.main', fontWeight: 'light' }}> {`Bienvenid${user.s=='F'? 'a' : (user.s=='M' ? 'o' : '@')} ${user.name}`}</Typography>   
+            <Typography variant="h3" sx={{ color: 'text.main', fontWeight: 'light' }}> {`Bienvenid${user.s=='F'? 'a' : (user.s=='M' ? 'o' : '@')} ${displayName}`}</Typography>   
         </Grid>
         <Divider sx={{width:'90%'}}/>
         
@@ -93,18 +98,7 @@ export const MainView = () => {
               )
             })}
           </Grid>
-            
-
-         
-
         </Grid>
-
-        {/* <Grid item xs={ 12 }>
-            <StarOutline sx={{ fontSize: 100, color: 'primary.main' }} />
-        </Grid>
-        <Grid item xs={ 12 }>
-            <Typography color="primary.main" variant='h5'>Selecciona o crea una entrada</Typography>
-        </Grid> */}
     </Grid>
 
     </>

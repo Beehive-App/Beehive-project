@@ -1,13 +1,13 @@
-import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material'
-import { mainAppTheme } from '../../theme/mainAppTheme'
-import { useDispatch, useSelector } from "react-redux";
-import { HomeLayout } from '../Layout/HomeLayout'
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from '../../hooks';
+import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
+import { HomeLayout } from '../Layout/HomeLayout'
+import { mainAppTheme } from '../../theme/mainAppTheme'
+import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material'
 import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
-import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
-import { useForm } from '../../hooks';
 
 const formData = {
   email:'',

@@ -14,7 +14,6 @@ html{height: 100%;}
 body{height:100%;}
 #root{height: 100%;}
 
-
 .active-menu-item{
     font-weight: bold;
     color: var(--main-bg-color) !important;
@@ -112,3 +111,184 @@ body{height:100%;}
         width: 80px;
     }
   }
+
+.MuiDrawer-paper{
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* MAIN BEEHIVE LAYOUT */
+
+.DrawerItem{
+    margin: .5rem 0rem;
+  }
+  
+  .Avatar-header-nophoto{
+      background: rgb(212,246,255);
+      background: linear-gradient(90deg, rgba(212,246,255,1) 0%, rgba(200,166,255,1) 100%);
+  }
+  .Avatar-header-nophoto:hover{
+    border: 3px solid #f1f1f1;
+    cursor: pointer;
+  }
+
+/* UPPER CALENDAR STYLES */  
+  .UpperCalendar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 56px);
+    background: #fafafa;
+    min-height:11vh;
+    margin-left: 56px; 
+    border-bottom:6px;
+  }
+  .UpperCalendar-Month-Year{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 75%;
+  }
+  
+  .Upper-Calendar-Day{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: #808080;
+  }
+  
+  .Upper-Calendar-Day-Number{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 999vh;
+    width: 45px;
+    height: 45px;
+    transition: .5 ease;
+  }
+  
+  .Upper-Calendar-Day-Number:hover{
+    border: solid rgb(66, 66, 66) 1px;
+    cursor: pointer;
+  }
+  
+  .Upper-Calendar-Day-active{
+    color: black;
+    font-size: 1.2rem;
+  }
+  
+  .UpperCalendar-arrows{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    font-size: .9rem;
+    height: 100%;
+  }
+  .UpperCalendar-arrows:hover{
+    cursor: pointer;
+  }
+  
+  .UpperCalendar-Week{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+
+  .Beehive-menu-item{
+    text-decoration: none;
+    color: #808080;
+  }
+
+
+/* TASKS */
+
+/* SECTIONS */
+
+.tasks-section-card{
+  min-height: 50vh;
+  min-width: 35vh;
+}
+
+/* Select del color, para todos los select por defecto ponerlo en flex para alinearlos en row. */
+.MuiSelect-select{
+  display: flex !important;
+}
+
+/* Scrollbar de las secciones */
+
+.scroll-sections::-webkit-scrollbar {
+  width: 1px;
+  background-color: none;
+}
+
+.scroll-sections::-webkit-scrollbar-thumb {
+  background-color: none;
+  border-radius: 10px;
+}
+
+
+/* Tasks: */
+
+.tasks-wrapper{
+  overflow: scroll;
+}
+
+.tasks-wrapper::-webkit-scrollbar {
+  width: 1px;
+  background-color: none;
+}
+
+.tasks-wrapper::-webkit-scrollbar-thumb {
+  background-color: none;
+  border-radius: 10px;
+}
+
+
+
+/* TINY CALENDAR */
+
+.tinyCalendar-other-month{
+  color: rgba(26, 26, 26, 0.413);
+}
+
+.tinyCalendar-current-month{
+
+  /* border: #454545 1px solid; */
+  border-radius: 999px;
+  color: rgb(0, 0, 0);
+  /* background: #313131; */
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+.tinyCalendar-current-month:hover{
+  border: #fafafa solid 1px;
+  color: black;
+  background-color: #F9C901;
+}
+
+.tinyCalendar-dayWeekNames{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: #000000;
+  background: #F9C901;
+  border-radius: 999px;
+}
+
+.tinyCalendar-active-day{
+  background-color: #F9C901; 
+}
