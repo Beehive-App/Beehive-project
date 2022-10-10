@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { Box, Grid, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { setActiveSection } from '../../../../store/Tasks/tasksSlice';
 
-export const SidebarSection = ({sectionTitle='',sectionDescription,sectionColor="primary.main",id,tasks}) => {
+export const SidebarSection = ({sectionFav,sectionTitle='',sectionDescription,sectionColor="primary.main",id,tasks}) => {
 
     const dispatch = useDispatch(); 
     
@@ -17,7 +17,7 @@ export const SidebarSection = ({sectionTitle='',sectionDescription,sectionColor=
 
     const onSetActiveSection = ()=>{
         //TODO: Cambiar tasks al array que traiga desde bd.    
-        dispatch(setActiveSection({sectionTitle,sectionDescription,sectionColor,id,tasks}))
+        dispatch(setActiveSection({sectionFav,sectionTitle,sectionDescription,sectionColor,id,tasks}))
     }
 
     return (

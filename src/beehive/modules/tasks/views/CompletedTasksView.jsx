@@ -64,7 +64,7 @@ return (
                 })
                 :  <Box className="animate__animated animate__fadeIn animate__faster"  width={1} height={'50vh'} sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
                     <Typography variant="h5" color="text.secondary" sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
-                            <Info color="error" sx={{mr:1,width:35,height:35}} /> ¡No has completado ninguna tarea en esta sección!
+                            <Info color="error" sx={{mr:1,width:35,height:35}} /> ¡No has completado ninguna tarea en este espacio!
                     </Typography>
                   </Box>
                 }

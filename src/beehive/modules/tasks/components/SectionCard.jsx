@@ -1,21 +1,32 @@
-import { AddCircle } from '@mui/icons-material';
+import { AddCircle, Circle, Favorite } from '@mui/icons-material';
 import { Box, Card, CardActionArea, CardActions, CardContent, Divider, IconButton, Typography } from '@mui/material';
 
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setActiveSection } from '../../../../store/Tasks/tasksSlice';
 
-export const SectionCard = ({id,sectionTitle,sectionDescription,sectionColor,tasks=[]}) => {
-
-  //TODO: Lógica si no tiene tareas. 
+export const SectionCard = ({id,sectionTitle,sectionDescription,sectionFav,sectionColor,tasks=[]}) => {
+ 
   /* Filter array uncompleted task to get the next task in section. */
-  /* const tasksUncompleted = tasks.filter(task => !task.taskCompleted);
+  const tasksUncompleted = tasks.filter(task => !task.completed);
   tasksUncompleted.sort((a,b)=>{ 
-    return a.taskDatetime - b.taskDatetime
+    return a.endDate - b.endDate
   })
-  const {taskTitle,taskDescription,taskPriority,taskDatetime} = tasksUncompleted[0]; 
+  
+  const dispatch = useDispatch();
+
+  let 
+  description,
+  endDate = null;
+
+  if(tasksUncompleted.length) {
+    description = tasksUncompleted[0].description;
+    endDate     = tasksUncompleted[0].endDate;
+  }
   const optionsDay = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   const optionsHourMin = {timezone: 'Europe/Madrid',hour:'numeric',minute:'2-digit'};
-  const taskDate = new Date(taskDatetime).toLocaleDateString("es-ES",optionsDay) +' '+ new Date(taskDatetime).toLocaleTimeString("es-ES",optionsHourMin); 
- */
+  const taskDate = endDate !=null ? 'Fecha: ' + new Date(endDate).toLocaleDateString("es-ES",optionsDay) +' '+ new Date(endDate).toLocaleTimeString("es-ES",optionsHourMin) : null; 
+
 
   /* UseRef de la nueva nota: */
   const newSectionRef = useRef(); 
@@ -26,10 +37,22 @@ export const SectionCard = ({id,sectionTitle,sectionDescription,sectionColor,tas
     
   }
 
+  const onSetActiveSection = ()=>{
+    const activeSection = {
+      id,sectionColor,sectionDescription,sectionFav,sectionTitle,tasks
+    }
+    dispatch(setActiveSection(activeSection))
+  }
+
   return (
     <>
     <Card key={id} sx={{ width: 350,height:450,m:2}}>
-      <CardActionArea className="scroll-sections" sx={{overflowY:'scroll',height:400 }}>
+      <Box sx={{background:sectionColor,height:'10%',display:'flex'}} alignItems={'center'} width={1}>
+          <Typography variant="h6" justifyContent={'flex-end'}  alignItems={'center'} sx={{display:'flex',width:1}}>
+            <Favorite sx={{color:"#f1f1f1",mr:1}} /> 
+          </Typography>
+      </Box>
+      <CardActionArea onClick={onSetActiveSection} className="scroll-sections" sx={{overflowY:'scroll',height:'90%' }}>
         <CardContent>
           <Box padding={1}>
             <Typography gutterBottom variant="h5" component="div" fontWeight={800}>
@@ -46,37 +69,15 @@ export const SectionCard = ({id,sectionTitle,sectionDescription,sectionColor,tas
             <Typography gutterBottom variant="h6" component="div">
               Próxima tarea:
             </Typography>
-            {/* <Typography fontSize={{md:'1.3rem'}} fontWeight={700}>
-              {taskTitle}:
+            <Typography fontSize={{md:'1.1rem'}} sx={{display:'flex',alignItems:'center'}}>
+              {description!=null && <Circle color="primary"sx={{width:'15px',height:'15px',mr:1}} />} {description}
             </Typography>
-            <Typography fontSize={{md:'1.1rem'}}>
-              {taskDescription}
+            <Typography fontSize={{md:'.9rem'}} sx={{color:taskDate==null && 'text.secondary',fontStyle:taskDate == null && 'italic',}}>
+              {taskDate!=null ? taskDate : 'No tienes tareas pendientes.'} 
             </Typography>
-            <Typography fontSize={{md:'.9rem'}}>
-              Fecha: {taskDate} 
-            </Typography> */}
           </Box>
         </CardContent>
       </CardActionArea>
-      <CardActions sx={{maxHeight:50}}>
-        {/* Añadir una tarea rápida: */}
-        <IconButton ref={newSectionRef} onClick={handleNewTask}>   
-          <AddCircle color="primary" sx={{width:'30px',height:'30px'}}  />
-        </IconButton>
-        <Typography fontSize="16px" 
-                    onClick={()=>{newSectionRef.current.click()}}
-                    ml={1} 
-                    color="text.primary" 
-                    sx={{cursor:'pointer',
-                    transition:'all .5s ease',
-                        '&:hover':{
-                          color:'primary.main',
-                          transform:'scale(1.08)'
-                        }
-                    }}>
-                      Añadir nueva tarea
-        </Typography>
-      </CardActions>
     </Card>
     </>
   )

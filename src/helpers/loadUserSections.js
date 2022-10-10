@@ -7,10 +7,9 @@ export const loadUserSections = async(uid='')=> {
     const collectionRef = collection(FirestoreDB,`${uid}/tasks/userSections`);
     const docs = await getDocs(collectionRef);  
     const sections = []; 
-
+    
     docs.forEach(doc=>{
         sections.push({id:doc.id,...doc.data()})
     })
-
     return sections;
 }

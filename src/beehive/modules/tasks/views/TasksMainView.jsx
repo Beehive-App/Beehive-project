@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Drawer, FormControl, IconButton, InputLabel, List, MenuItem, Select, TextField, ThemeProvider, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Drawer, FormControl, IconButton, InputLabel, List, ListItem, MenuItem, Select, TextField, ThemeProvider, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useRef,useState } from 'react'
 import { BeehiveAppLayout } from '../../../layout/BeehiveAppLayout'
 import { SectionCard } from '../components/SectionCard'
@@ -11,8 +11,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useSnackbar } from 'notistack'
 import { useNavigate } from 'react-router-dom'
 import { SectionMobile } from '../components/SectionMobile'
-import { CastConnectedOutlined, Favorite, FavoriteBorder, HelpOutline, QuestionMark } from '@mui/icons-material'
+import { CastConnectedOutlined, Favorite, FavoriteBorder, HelpOutline, Info, QuestionMark } from '@mui/icons-material'
 import { sectionColors } from '../../../../data'
+import { unstable_styleFunctionSx } from '@mui/system'
+import { NoSectionsComponent } from '../components/NoSectionsComponent'
 
 
 //data de bd
@@ -149,7 +151,6 @@ export const TasksMainView = () => {
                     width:"300px",
                     background:'white',
                     borderRight:'1px solid #eeeeee',
-
                    }}
               > 
                 {/* Sidebar Title */}
@@ -161,13 +162,19 @@ export const TasksMainView = () => {
                 </Box>
 
                 {/* Sidebar Items */}
-                <Box height={350} className="scroll-sections" sx={{overflowY:"scroll",direction:'rtl'}}>
+                <Box height={350} className="scroll-sections" sx={{overflowY:"scroll",direction:userSections.lenght  && 'rtl'}}>
                    <List >
                     {/* FOREACH / MAP ARRAY CON LAS SECCIONES */}
                     {
-                      userSections.map(sect=>{
-                      return <SidebarSection key={sect.id} {...sect} />
-                    })
+                      (userSections.length > 0)
+                      ? userSections.map(sect=>{
+                        return <SidebarSection key={sect.id} {...sect} />
+                      })
+                      : <ListItem sx={{width:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+                          <Typography variant='subtitle2' sx={{display:'flex',alignItems:'center',textAlign:'center'}} color="text.secondary">
+                            Aquí aparecerán tus espacios creados. ¿Por qué no pruebas a añadir uno?
+                          </Typography>
+                        </ListItem>
                     }
                    </List>
                 </Box>
@@ -179,7 +186,7 @@ export const TasksMainView = () => {
                 <Divider/>
               {/* Add section */}
               <Box width={1} minHeight='13%' flexDirection="row" alignItems="center" justifyContent='center' padding={{md:2}} background="red" sx={{display:'flex'}}>
-                   
+                    
                    <IconButton ref={newSectionRef} onClick={handleDialogState}>
                     <AddCircleIcon color="primary" />
                    </IconButton>
@@ -213,12 +220,20 @@ export const TasksMainView = () => {
                       
                     }}
                 >
-                  {/* array map con sections del user traíadas de bd. */}
-
                     {
+                      (userSections.length > 0)
+                      ? 
                       userSections.map(sect=>{ 
                         return (sect.sectionFav) ? <SectionCard key={sect.id} {...sect} /> : <></>; 
                       })
+                      : <Box sx={{width:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+                          <Typography variant='subtitle' sx={{display:'flex',alignItems:'center'}} color="text.primary">
+                            <Info color="primary" />Información:
+                          </Typography>
+                          <Typography variant='subtitle2' sx={{display:'flex',alignItems:'center',textAlign:'center'}} color="text.secondary">
+                            ¡Todavía no has establecido ningún espacio como favorito!
+                          </Typography>
+                       </Box>
 
                     }
               </Box>

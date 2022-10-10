@@ -34,6 +34,7 @@ import { createSlice } from '@reduxjs/toolkit';
                 sectionTitle:payload.sectionTitle,
                 sectionDescription:payload.sectionDescription,
                 sectionColor:payload.sectionColor,
+                sectionFav:payload.sectionFav,
                 tasks:payload.tasks,
             }
         },
@@ -47,7 +48,7 @@ import { createSlice } from '@reduxjs/toolkit';
             state.activeSection = payload.sectionToUpdate;
             state.userSections  = payload.newUserSections;
         },
-        completeTasks:(state,{payload})=>{
+        setTasks:(state,{payload})=>{
             state.activeSection.tasks = payload;
         },
         completeTasksSection:(state,{payload})=>{
@@ -58,4 +59,4 @@ import { createSlice } from '@reduxjs/toolkit';
         }
     }
 });
-export const { setActiveTab,completeTasksSection,completeTasks,addNewtask,setActiveDay,setSections,createNewSection,resetUserSections,setActiveSection,unsetActiveSection } = tasksSlice.actions;
+export const { setTasks,setActiveTab,completeTasksSection,addNewtask,setActiveDay,setSections,createNewSection,resetUserSections,setActiveSection,unsetActiveSection } = tasksSlice.actions;

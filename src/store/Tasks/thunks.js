@@ -13,13 +13,9 @@ export const startLoadingUserSections = ()=>{
 }
 
 
-export const startCreatingNewSection = ({sectionTitle,sectionDescription,sectionColor='',sectionFav})=>{
+export const startCreatingNewSection = ({sectionTitle,sectionDescription,sectionColor='#f1f1f1',sectionFav})=>{
     return async(dispatch,getState)=>{
         try{
-            if(sectionColor === ''){
-                
-            }
-
             const {uid} = getState().auth; 
             const section = {
                 sectionTitle,
@@ -28,7 +24,7 @@ export const startCreatingNewSection = ({sectionTitle,sectionDescription,section
                 sectionFav,
                 tasks:[],
             }
-            const newDoc = await doc(collection(FirestoreDB,`${uid}/tasks/userSections`));
+            const newDoc = doc(collection(FirestoreDB,`${uid}/tasks/userSections`));
             await setDoc(newDoc,section); 
             //Section id. 
             section.id = newDoc.id; 
@@ -42,44 +38,11 @@ export const startCreatingNewSection = ({sectionTitle,sectionDescription,section
 
     }
 }
-export const startCreatingNewtask = ({description,endDate,taskPriority})=>{
-    return async(dispatch,getState)=>{
-        try{
-            const {uid} = getState().auth;
-            const {activeSection,userSections} = getState().tasks; 
-
-            const task = {
-                tid:"id" + Math.random().toString(16).slice(2),
-                description,
-                completed:false,
-                endDate,
-                priority:taskPriority,
-            }
-            let sectionToUpdate = {...activeSection}
-            sectionToUpdate.tasks = [...sectionToUpdate.tasks,task];
-
-            delete sectionToUpdate.id; 
-            const url = `${uid}/tasks/userSections/${activeSection.id}/`; 
-            const docRef = doc(FirestoreDB,url);
-            await setDoc(docRef,sectionToUpdate,{merge:true});
-            const newUserSections = [...userSections];
-            const sectionIndex = newUserSections.findIndex(obj=>obj.id === activeSection.id); 
-            newUserSections.splice(sectionIndex,1);
-            newUserSections.push(sectionToUpdate)
-
-            dispatch( addNewtask({sectionToUpdate,newUserSections}) ) 
-            return {ok:true}; 
-        }
-        catch(error){
-            console.error(error)
-            return {ok:false}; 
-        }
-    }
-}
-
+//Función que se encarga de la funcionalidad del módulo de tareas: Crear, completar, eliminar y actualizar.
 export const updateSection = ()=>{
     return async(dispatch,getState)=>{
         try {
+            console.log('updating');
             //TODO: DISPATCH COMPLETING NOTE
             const {uid} = getState().auth;
             const {activeSection,userSections} = getState().tasks
@@ -91,16 +54,14 @@ export const updateSection = ()=>{
             const sectionIndex = newUserSections.findIndex(obj=>obj.id === activeSection.id); 
             newUserSections.splice(sectionIndex,1);
             newUserSections.push(activeSection)
-            
-            dispatch(completeTasksSection({newUserSections}));
 
+            dispatch(completeTasksSection({newUserSections}));
+            
             return {ok:true}; 
         } catch (error) {
             console.error(error);
             return {ok:false}; 
         }
-
-
     }
 } 
 
