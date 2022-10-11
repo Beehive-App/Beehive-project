@@ -1,17 +1,17 @@
 import { AddTask, CenterFocusStrongOutlined, CheckCircle, Circle, Delete, Edit, FirstPage, HorizontalRule, Info, PriorityHigh, Settings } from '@mui/icons-material';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Fab, FormControl, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, Tab, Tabs, TextField, Tooltip, Typography, useMediaQuery } from '@mui/material'
-import { DateTimePicker } from '@mui/x-date-pickers';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { isSameDay } from 'date-fns/esm';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from '../../../../hooks/useForm';
-import { setActiveTab, setTasks, unsetActiveSection } from '../../../../store/Tasks/tasksSlice'
+import { setActiveTab, setIsConfigSection, setTasks, unsetActiveSection } from '../../../../store/Tasks/tasksSlice'
 import { updateSection } from '../../../../store/Tasks/thunks';
 import { TabPanel } from '../../../components/TabPanel';
 import { TinyCalendar } from '../components/TinyCalendar';
 import { CompletedTasksView } from './CompletedTasksView';
 import { UncompletedTasksView } from './UncompletedTasksView';
-
+import { enUS, fr, es } from 'date-fns/esm/locale'
 let formData = {
   description:'',
   priority:0,
@@ -32,7 +32,6 @@ export const TaskSectionView = () => {
   const {activeDay,activeSection,activeTab} = useSelector(state=>state.tasks);   
   const {sectionTitle,sectionDescription,tasks} = activeSection; 
 
-
   const onCompleteTask = (task)=>{  
 
     let newTasks = []; 
@@ -46,13 +45,10 @@ export const TaskSectionView = () => {
     dispatch(updateSection())
     
   }
-
   //useForm 
   const {taskId,description,onInputChange,setFormState,formState} = useForm(formData)
-
   //date picker:
   const currentDay = (activeDay!=null) ? new Date(activeDay) : new Date();
-
   const [dateValue, setDateValue] = useState(currentDay);
   const handleDateChange = (newValue) => {
     setDateValue(newValue);
@@ -141,11 +137,9 @@ const onDeleteTask = (task) =>{
   const handleUnsetActive = ()=>{
     dispatch(unsetActiveSection()); 
   }
-
+  //Create new task logic
   const onNewTask = async()=>{
     const {taskPriority,endDate} = formState;
-    console.log(taskPriority,endDate)
-
     const newTask = {
       tid:"id" + Math.random().toString(16).slice(2),
       description,
@@ -153,18 +147,16 @@ const onDeleteTask = (task) =>{
       endDate,
       priority:taskPriority,
     }
-    console.log({pre:activeSection});
-    console.log({tasks})
     const newTasksArray = [...tasks,newTask];
-    console.log({newTasksArray})
-
-
     dispatch( setTasks(newTasksArray) );
-    
-    console.log({post:activeSection});
     dispatch( updateSection() );
     handleDialogState()
   }
+
+  const handleSectionConfig = ()=>{
+    dispatch(setIsConfigSection())
+  }
+
 
   return (
     <>
@@ -192,7 +184,7 @@ const onDeleteTask = (task) =>{
                   <FirstPage color="primary"/>
                 </ListItemButton>
                 <Divider />
-                <ListItemButton >
+                <ListItemButton onClick={handleSectionConfig}>
                   <ListItemText primary="Configuración de Espacio" />
                   <Settings color="primary" />
                 </ListItemButton>
@@ -274,7 +266,7 @@ const onDeleteTask = (task) =>{
                     <>
                       <Box className="animate__animated animate__fadeIn"  sx={{display:'flex',flexDirection:'row',width:1,alignItems:'center',justifyContent:'space-between',mt:1,mb:1}}>
                         <Box width="75%">
-                          <Typography fontSize={{md:'1.2rem'}} sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'flex-start',textDecoration:task.completed?'line-through':'none'}}>
+                          <Typography fontSize={{md:'1.2rem'}} sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'flex-start',textDecoration:task.completed?'line-through':'none',color:(task.endDate<new Date().getTime())?'red':'black' }}>
                               <Circle color="primary" sx={{mr:1,width:'15px',height:'15px',}} /> {task.description}
                           </Typography>
                           <Typography fontSize={{md:'1.2rem'}} sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
@@ -353,14 +345,18 @@ const onDeleteTask = (task) =>{
                   // error={!!sectionTitleValid && formSubmited}
                 />
                 <Box flexDirection='row' justifyContent={'flex-start'} alignItems={'flex-end'} width={1} sx={{display:'flex',mt:2}}>
-                  <DateTimePicker
-                    label="Fecha y hora (mm/dd/aa)"
-                    value={dateValue}
-                    name="endDate"
-                    onChange={handleDateChange}
+                  <LocalizationProvider dateAdapter={} adapterLocale={es}>
                     
-                    renderInput={(params) => <TextField disabled={true} variant='standard'{...params} sx={{mr:5,width:350}}/>}
-                  />
+                    <DateTimePicker
+                      label="Fecha y hora (mm/dd/aa)"
+                      value={dateValue}
+                      name="endDate"
+                      onChange={handleDateChange}
+                      
+                      renderInput={(params) => <TextField disabled={true} variant='standard'{...params} sx={{mr:5,width:350}}/>}
+                    />
+
+                  </LocalizationProvider>
                   <FormControl fullWidth sx={{marginTop:2,padding:'0 !important'}}>
                       <InputLabel id="section-color">Prioridad</InputLabel>
                       <Select

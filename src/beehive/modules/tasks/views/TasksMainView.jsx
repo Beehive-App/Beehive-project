@@ -132,7 +132,7 @@ export const TasksMainView = () => {
 
   }
 
-  return (
+  return(
     <>
             <Box className="main-tasks-container animate__animated animate__fadeIn" 
             sx={{
