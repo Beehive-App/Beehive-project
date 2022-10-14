@@ -22,7 +22,7 @@ export const SectionMobile = (section) => {
   const onSetActiveSection = ()=>{
       //TODO: Cambiar tasks al array que traiga desde bd.
       
-      dispatch(setActiveSection({sectionFav,sectionTitle,sectionDescription,sectionColor,id,tasks}))
+      dispatch(setActiveSection({sectionFav,sectionTitle,sectionDescription,sectionColor,id,tasks,isConfiguring:false}))
   
   }
 

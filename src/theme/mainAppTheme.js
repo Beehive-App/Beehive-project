@@ -14,7 +14,7 @@ export const mainAppTheme = createTheme({
       default: '#ffffff',
     },
     error: {
-      main: '#ff383a',
+      main: '#d40816',
     },
     warning: {
       main: '#ea9251',

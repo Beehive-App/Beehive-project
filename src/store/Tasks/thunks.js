@@ -1,7 +1,7 @@
-import { arrayUnion, collection, doc, setDoc } from "firebase/firestore/lite";
+import { arrayUnion, collection, deleteDoc, doc, setDoc } from "firebase/firestore/lite";
 import { FirestoreDB } from "../../firebase/config";
 import { loadUserSections } from "../../helpers/loadUserSections";
-import { addNewtask, completeTasksSection, createNewSection, setSections } from "./tasksSlice";
+import { addNewtask, completeTasksSection, createNewSection, deleteSectionById, setSections } from "./tasksSlice";
 
 export const startLoadingUserSections = ()=>{
     return async (dispatch,getState)=>{
@@ -38,7 +38,7 @@ export const startCreatingNewSection = ({sectionTitle,sectionDescription,section
 
     }
 }
-//Función que se encarga de la funcionalidad del módulo de tareas: Crear, completar, eliminar y actualizar.
+//Función que se encarga de la funcionalidad del módulo de tareas: Crear, completar, eliminar y actualizar. También se encarga de actualizar la configuración de los espacios
 export const updateSection = ()=>{
     return async(dispatch,getState)=>{
         try {
@@ -64,5 +64,17 @@ export const updateSection = ()=>{
         }
     }
 } 
+
+export const startDeletingSection = ()=>{
+    return async (dispatch,getState)=>{
+        const {uid} = getState().auth;
+        const {activeSection} = getState().tasks;
+
+        const docRef = doc(FirestoreDB,`${uid}/tasks/userSections/${activeSection.id}`); 
+        await deleteDoc(docRef);
+        
+        dispatch(deleteSectionById(activeSection.id)); 
+    }
+}
 
 

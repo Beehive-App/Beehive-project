@@ -4,7 +4,6 @@ import { createSlice } from '@reduxjs/toolkit';
         initialState: {
             userSections:[],
             labels:[],
-            favSections:[],
             isSaving:false,
             messageSaved:'',
             activeSection:null,
@@ -36,7 +35,7 @@ import { createSlice } from '@reduxjs/toolkit';
                 sectionColor:payload.sectionColor,
                 sectionFav:payload.sectionFav,
                 tasks:payload.tasks,
-                isConfiguring:false,
+                isConfiguring:payload.isConfiguring,
             }
         },
         setIsConfigSection:(state,{payload})=>{
@@ -60,7 +59,15 @@ import { createSlice } from '@reduxjs/toolkit';
         },
         setActiveTab:(state,{payload})=>{
             state.activeTab = payload;
+        },
+        deleteSectionById:(state,action)=>{
+            state.userSections = state.userSections.filter((section)=>{
+                return section.id !== action.payload;
+            });
+            state.activeSection = null; 
+            state.activeDay = new Date().getTime();
+            state.activeTab = 0;
         }
     }
 });
-export const { setIsConfigSection,setTasks,setActiveTab,completeTasksSection,addNewtask,setActiveDay,setSections,createNewSection,resetUserSections,setActiveSection,unsetActiveSection } = tasksSlice.actions;
+export const { deleteSectionById,setIsConfigSection,setTasks,setActiveTab,completeTasksSection,addNewtask,setActiveDay,setSections,createNewSection,resetUserSections,setActiveSection,unsetActiveSection } = tasksSlice.actions;

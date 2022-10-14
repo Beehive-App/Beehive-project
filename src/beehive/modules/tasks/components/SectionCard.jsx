@@ -39,7 +39,7 @@ export const SectionCard = ({id,sectionTitle,sectionDescription,sectionFav,secti
 
   const onSetActiveSection = ()=>{
     const activeSection = {
-      id,sectionColor,sectionDescription,sectionFav,sectionTitle,tasks
+      id,sectionColor,sectionDescription,sectionFav,sectionTitle,tasks,isConfiguring:false
     }
     dispatch(setActiveSection(activeSection))
   }

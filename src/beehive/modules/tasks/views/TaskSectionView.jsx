@@ -1,6 +1,7 @@
 import { AddTask, CenterFocusStrongOutlined, CheckCircle, Circle, Delete, Edit, FirstPage, HorizontalRule, Info, PriorityHigh, Settings } from '@mui/icons-material';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Fab, FormControl, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, Tab, Tabs, TextField, Tooltip, Typography, useMediaQuery } from '@mui/material'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { isSameDay } from 'date-fns/esm';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
@@ -345,10 +346,10 @@ const onDeleteTask = (task) =>{
                   // error={!!sectionTitleValid && formSubmited}
                 />
                 <Box flexDirection='row' justifyContent={'flex-start'} alignItems={'flex-end'} width={1} sx={{display:'flex',mt:2}}>
-                  <LocalizationProvider dateAdapter={} adapterLocale={es}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
                     
                     <DateTimePicker
-                      label="Fecha y hora (mm/dd/aa)"
+                      label="Fecha y hora"
                       value={dateValue}
                       name="endDate"
                       onChange={handleDateChange}
@@ -407,14 +408,16 @@ const onDeleteTask = (task) =>{
                   // error={!!sectionTitleValid && formSubmited}
                 />
                 <Box flexDirection='row' justifyContent={'flex-start'} alignItems={'flex-end'} width={1} sx={{display:'flex',mt:2}}>
-                  <DateTimePicker
-                    label="Fecha y hora (mm/dd/aa)"
-                    value={dateValue}
-                    name="endDate"
-                    onChange={handleDateChange}
-                    
-                    renderInput={(params) => <TextField disabled={true} variant='standard'{...params} sx={{mr:5,width:350}}/>}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                    <DateTimePicker
+                      label="Fecha y hora"
+                      value={dateValue}
+                      name="endDate"
+                      onChange={handleDateChange}
+                      
+                      renderInput={(params) => <TextField disabled={true} variant='standard'{...params} sx={{mr:5,width:350}}/>}
+                    />
+                  </LocalizationProvider>
                   <FormControl fullWidth sx={{marginTop:2,padding:'0 !important'}}>
                       <InputLabel id="section-color">Prioridad</InputLabel>
                       <Select
