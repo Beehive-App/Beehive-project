@@ -229,12 +229,12 @@ const onDeleteTask = (task) =>{
             </Box>
 
             <TabPanel value={activeTab} index={0} >
-              <Box pt={5}>
+              <Box pt={5} height={{xs:'65vh',md:'65vh',lg:'65vh'}}>
               <Typography variant="h5" mb={2} className="animate__animated animate__fadeIn"  >
                 { tasksTitle }
               </Typography>
               <Divider />
-              <Box className="tasks-wrapper" height={{xs:'300px',md:'',lg:''}}>
+              <Box className="tasks-wrapper" height={{xs:'75%',md:'75%',lg:'75%'}}>
                 {
                 orderedTasks.length 
                 ?                
@@ -343,7 +343,6 @@ const onDeleteTask = (task) =>{
                   name="description" 
                   value={description}
                   onChange={onInputChange}
-                  // error={!!sectionTitleValid && formSubmited}
                 />
                 <Box flexDirection='row' justifyContent={'flex-start'} alignItems={'flex-end'} width={1} sx={{display:'flex',mt:2}}>
                   <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>

@@ -18,7 +18,7 @@ export const UncompletedTasksView = () => {
 
   // (Array.isArray(sectionTasks) && sectionTasks.length) a la hora de pintar en jsx.
   const uncompletedTasks =  activeDay == null ? tasks : tasks.filter(task => !task.completed); 
-  const orderedTasks = (Array.isArray(uncompletedTasks) && uncompletedTasks.length) ? [...uncompletedTasks].sort((a,b)=> a.priority - b.priority || a.endDate - b.endDate) : []; 
+  const orderedTasks = (Array.isArray(uncompletedTasks) && uncompletedTasks.length) ? [...uncompletedTasks].sort((a,b)=> a.endDate - b.endDate) : []; 
   
     let currentDay = 0; 
 

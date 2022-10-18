@@ -11,8 +11,6 @@ export const startLoadingUserSections = ()=>{
         dispatch(setSections(userSections)) 
     }
 }
-
-
 export const startCreatingNewSection = ({sectionTitle,sectionDescription,sectionColor='#f1f1f1',sectionFav})=>{
     return async(dispatch,getState)=>{
         try{
@@ -42,8 +40,6 @@ export const startCreatingNewSection = ({sectionTitle,sectionDescription,section
 export const updateSection = ()=>{
     return async(dispatch,getState)=>{
         try {
-            console.log('updating');
-            //TODO: DISPATCH COMPLETING NOTE
             const {uid} = getState().auth;
             const {activeSection,userSections} = getState().tasks
             const url = `${uid}/tasks/userSections/${activeSection.id}/`; 
@@ -64,7 +60,6 @@ export const updateSection = ()=>{
         }
     }
 } 
-
 export const startDeletingSection = ()=>{
     return async (dispatch,getState)=>{
         const {uid} = getState().auth;
