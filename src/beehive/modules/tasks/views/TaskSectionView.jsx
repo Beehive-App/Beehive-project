@@ -48,6 +48,7 @@ export const TaskSectionView = () => {
   }
   //useForm 
   const {taskId,description,onInputChange,setFormState,formState} = useForm(formData)
+  
   //date picker:
   const currentDay = (activeDay!=null) ? new Date(activeDay) : new Date();
   const [dateValue, setDateValue] = useState(currentDay);
@@ -94,7 +95,6 @@ export const TaskSectionView = () => {
         console.log({isUpdating})
     }
 }
-
 const onUpdateTask = () =>{
   const {taskId,taskPriority,description,endDate} = formState;
   let newTasks = []; 
@@ -138,6 +138,7 @@ const onDeleteTask = (task) =>{
   const handleUnsetActive = ()=>{
     dispatch(unsetActiveSection()); 
   }
+  
   //Create new task logic
   const onNewTask = async()=>{
     const {taskPriority,endDate} = formState;
@@ -172,7 +173,7 @@ const onDeleteTask = (task) =>{
                 height:'100%',
                 width:"370px",
                 background:'',
-                borderRight:'1px solid black',
+                borderRight:'1px solid #fafafa',
                 padding:1,
                 background:"white"
                }}
@@ -229,12 +230,12 @@ const onDeleteTask = (task) =>{
             </Box>
 
             <TabPanel value={activeTab} index={0} >
-              <Box pt={5}>
+              <Box pt={5} height={{xs:'65vh',md:'65vh',lg:'65vh'}}>
               <Typography variant="h5" mb={2} className="animate__animated animate__fadeIn"  >
                 { tasksTitle }
               </Typography>
               <Divider />
-              <Box className="tasks-wrapper" height={{xs:'300px',md:'',lg:''}}>
+              <Box className="tasks-wrapper" height={{xs:'75%',md:'75%',lg:'75%'}}>
                 {
                 orderedTasks.length 
                 ?                
@@ -343,7 +344,6 @@ const onDeleteTask = (task) =>{
                   name="description" 
                   value={description}
                   onChange={onInputChange}
-                  // error={!!sectionTitleValid && formSubmited}
                 />
                 <Box flexDirection='row' justifyContent={'flex-start'} alignItems={'flex-end'} width={1} sx={{display:'flex',mt:2}}>
                   <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>

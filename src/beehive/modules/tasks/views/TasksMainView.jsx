@@ -128,8 +128,6 @@ export const TasksMainView = () => {
 
     if (!ok) enqueueSnackbar('No se ha podido crear el espacio.',{variant:'error'}); 
     else enqueueSnackbar(`El espacio "${sectionTitle}" se ha creado correctamente`,{variant:'success'});
-
-
   }
 
   return(

@@ -2,6 +2,7 @@ import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@mui/mate
 import { Box } from '@mui/system';
 import LoginIcon from '@mui/icons-material/Login';
 import { Link } from 'react-router-dom';
+import { useRef } from 'react';
 
 //TODO: THIS VARS SHOULD BE PASSED AS PROPS TO THE MAINBAR COMPONENT
 //INFO : Esto es para que en el proyecto final, muestre como pasandole propiedades puedo generarme este componente y reutilizarlo en otra app cualquiera. (vendría de las props, igual que los elementos del menú (serán los módulos que el usuario tenga activos en base de datos.))
@@ -27,6 +28,9 @@ const menuItems = [
 
 
 export const MainBar = () => {
+
+  const refLogin = useRef();
+
   return (
     <>
         <AppBar position="static" sx={{backgroundColor:'#ffffff',boxShadow:'none !important'}}>
@@ -84,6 +88,7 @@ export const MainBar = () => {
                       <Box display={{xs:'none',md:'flex'}}>
                         <Button 
                         variant="contained" 
+                        onClick={()=>{refLogin.current.click()}}
                         sx={{
                             fontWeight:'bold',
                             boxShadow:'none !important',
@@ -95,6 +100,7 @@ export const MainBar = () => {
                                     >
                           Inicia Sesión
                         </Button>
+                        <Link ref={refLogin} to={'/home/login'}></Link>
                       </Box>
                     <Box display={{xs:'flex',md:'none'}} flexDirection='column' >
                         <IconButton sx={{color:'white',width:'4vh',height:'4vh',backgroundColor:'primary.main'}} padding={'10px 10px'}>

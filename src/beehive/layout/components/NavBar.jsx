@@ -1,13 +1,14 @@
 import { useRef, useState } from 'react';
-import { startLogOut } from '../../../store/auth';
+import { startLogOut, startPasswordReset } from '../../../store/auth';
 import { useDispatch } from 'react-redux';
 import { useTemporalDrawer } from '../../Hooks/useTemporalDrawer';
 import { AppBar, Toolbar, List, ListItem,ListItemButton, Avatar, Box, Menu, MenuItem, Divider, ListItemIcon, IconButton, Tooltip, Button, Drawer, ListItemText, Typography, useMediaQuery } from '@mui/material';
 import { menuItems } from '../../../data';
 import { AvatarOnline } from './AvatarOnline';
-import { Logout, Settings, Info, HelpOutline, Minimize as MinimizeIcon, MenuOpen as MenuOpenIcon } from '@mui/icons-material';
+import { Logout, Settings, Info, HelpOutline, Minimize as MinimizeIcon, MenuOpen as MenuOpenIcon, LockReset } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 
 export const NavBar = () => {
@@ -15,15 +16,16 @@ export const NavBar = () => {
   const dispatch = useDispatch(); 
   const MobileView = useMediaQuery('(max-width:600px)');
 
-  //show user first letter / google photo
-  // const {displayName} = useSelector(state => state.auth); 
-
   const handleLogOut = ()=>{
      dispatch(startLogOut()); 
    }
    /* TEMPORAL DRAWER */
    const {open:openDrawer, toggleDrawer} = useTemporalDrawer(MobileView);
-  
+
+
+   /* SNACKBARS STATE */
+   const {enqueueSnackbar} = useSnackbar();
+
   /* MENÚ */
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -37,6 +39,13 @@ export const NavBar = () => {
   const handleTest = ()=>{
    
   }
+
+  const handleResetPassword = async()=>{
+    const sentRequest = await dispatch(startPasswordReset());
+    if(!sentRequest) enqueueSnackbar('No se ha podido enviar el correo de restablecimiento de contraseña',{variant:"error"});;
+    enqueueSnackbar('Se ha enviado un correo de restablecimiento de contraseña al correo electrónico asociado a su cuenta',{variant:"success"});
+  } 
+
 
   return (
     <>
@@ -108,25 +117,18 @@ export const NavBar = () => {
         </MenuItem>
         <Divider />
         {/* INFO: User Menu: Info */}
-        <MenuItem>
+        <MenuItem onClick={handleResetPassword}>
           <ListItemIcon>
-            <Info fontSize="small" />
+            <LockReset fontSize="small" />
           </ListItemIcon>
-          Información
+          Restablecer contraseña
         </MenuItem>
         {/* INFO: User Menu: TUTORIALS */}
         <MenuItem>
         <ListItemIcon>
           <HelpOutline fontSize="small"/> 
         </ListItemIcon>
-        Guías de usuario
-        </MenuItem>
-        {/* INFO: User Menu: Settings */}
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Ajustes
+          Guías de usuario (wip)
         </MenuItem>
         {/* INFO: User Menu: Logout */}
         <MenuItem onClick={handleLogOut}>

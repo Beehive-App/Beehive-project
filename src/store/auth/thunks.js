@@ -1,4 +1,4 @@
-import { sendEmailVerification } from "firebase/auth";
+import { sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { FirebaseAuth } from "../../firebase/config";
 import {loginUserWithEmailPassword, logoutFirebase, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/Providers";
 import { resetUserSections, unsetActiveSection } from "../Tasks/tasksSlice";
@@ -12,7 +12,7 @@ export const checkingAuth = ()=>{
 }
 
 //Auth Via Google: 
-export const startGoogleSignIn =()=>{
+export const startGoogleSignIn =() =>{
     return async(dispatch)=>{
       await dispatch(checkCredentials()); 
        const result = await signInWithGoogle();
@@ -39,7 +39,6 @@ export const startLoginWithEmailPassword = (email,password)=>{
 /* REGISTER */
 export const startCreatingUserWithEmailPassword = ({displayName,email,password})=>{
     return async(dispatch)=>{
-        //TODO: SEND EMAIL VERIFICATION LINK. 
         dispatch( checkCredentials() ); 
         const { ok, uid, photoURL,emailVerified,errorMessage }  = await registerUserWithEmailPassword({displayName,email,password}); 
 
@@ -55,10 +54,20 @@ export const startCreatingUserWithEmailPassword = ({displayName,email,password})
 export const startLogOut =()=>{
     return async(dispatch)=>{
         await logoutFirebase();
-        
         dispatch(logout()); 
         dispatch(resetUserSections()); 
         dispatch(unsetActiveSection());
-        //TODO: CLEAR USER INFO AND TASKS....
+    }
+}
+
+
+//Reset password: 
+
+export const startPasswordReset = ()=>{
+    return async(dispatch,getState)=>{
+        if(!FirebaseAuth.currentUser) return false; 
+        const {email} = FirebaseAuth.currentUser; 
+        await sendPasswordResetEmail(FirebaseAuth,email);
+        return true; 
     }
 }

@@ -14,9 +14,6 @@ export const BeehiveAppLayout = ({children =<></>}) => {
     <ThemeProvider theme={mainAppTheme} >
       <NavBar />
           {children}
-{/*       {
-        !MobileView && <MostUsedMenu />
-      } */}
       {
         MobileView && <BottomNavigationMobile />
       }

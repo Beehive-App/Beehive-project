@@ -15,8 +15,7 @@ export const SidebarSection = ({sectionFav,sectionTitle='',sectionDescription,se
         return sectionDescription.length > 45 ? sectionDescription.substring(0, 45)+'...' : sectionDescription;
     },[sectionDescription]); 
 
-    const onSetActiveSection = ()=>{
-        //TODO: Cambiar tasks al array que traiga desde bd.    
+    const onSetActiveSection = ()=>{   
         dispatch(setActiveSection({sectionFav,sectionTitle,sectionDescription,sectionColor,id,tasks,isConfiguring:false}))
     }
 

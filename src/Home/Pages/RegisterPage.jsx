@@ -31,6 +31,7 @@ export const RegisterPage = () => {
   const {enqueueSnackbar} = useSnackbar();
 
   const navigate = useNavigate();
+
   const {
     displayName, 
     email, 
@@ -48,12 +49,13 @@ export const RegisterPage = () => {
   const {status,errorMessage} = useSelector(state => state.auth); 
 
   const isCheckingAuth = useMemo( () => status === 'checking', [status] ); 
-  const [formSubmited, setFormSubmited] = useState(false)
 
+  
   const handleSnacks = (message,variant)=>{
     enqueueSnackbar(message,{variant}); 
   }
-
+  
+  const [formSubmited, setFormSubmited] = useState(false)
   const onSubmit = async(e)=>{
     e.preventDefault(); 
     

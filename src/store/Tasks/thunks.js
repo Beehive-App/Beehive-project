@@ -12,7 +12,6 @@ export const startLoadingUserSections = ()=>{
     }
 }
 
-
 export const startCreatingNewSection = ({sectionTitle,sectionDescription,sectionColor='#f1f1f1',sectionFav})=>{
     return async(dispatch,getState)=>{
         try{
@@ -34,16 +33,12 @@ export const startCreatingNewSection = ({sectionTitle,sectionDescription,section
         catch(error){
             return {ok:false}; 
         }
-
-
     }
 }
 //Función que se encarga de la funcionalidad del módulo de tareas: Crear, completar, eliminar y actualizar. También se encarga de actualizar la configuración de los espacios
 export const updateSection = ()=>{
     return async(dispatch,getState)=>{
         try {
-            console.log('updating');
-            //TODO: DISPATCH COMPLETING NOTE
             const {uid} = getState().auth;
             const {activeSection,userSections} = getState().tasks
             const url = `${uid}/tasks/userSections/${activeSection.id}/`; 
@@ -64,7 +59,6 @@ export const updateSection = ()=>{
         }
     }
 } 
-
 export const startDeletingSection = ()=>{
     return async (dispatch,getState)=>{
         const {uid} = getState().auth;

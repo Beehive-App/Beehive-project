@@ -8,7 +8,7 @@ export const mainAppTheme = createTheme({
       main: '#F9C901',
     },
     secondary: {
-      main: '#bc00ff',
+      main: '#db7ff5',
     },
     background: {
       default: '#ffffff',

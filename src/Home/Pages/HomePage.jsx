@@ -6,16 +6,11 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 export const HomePage = () => {
 
-  // const theme = useTheme(mainAppTheme); 
-  // console.log({theme})
-  // const mainColor = theme.palette.primary.main; 
-
   return (
     <>
       <HomeLayout>
-
           <Box 
-          className="main-initial-content" 
+          className="main-initial-content animate__animated animate__fadeIn animate__faster" 
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
@@ -53,7 +48,6 @@ export const HomePage = () => {
             </Box>
           </Box>
 
-          {/* INFO: test para ver como queda esto.*/ }
           <Box className="main-info"
           flexDirection="column"
           alignItems="center"

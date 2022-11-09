@@ -7,7 +7,7 @@ export const BeehiveMainPage = () => {
   return (
     <>
       <BeehiveAppLayout>
-        <MainView />
+        <MainView />  
       </BeehiveAppLayout>
     </>
       

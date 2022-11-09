@@ -1,7 +1,7 @@
 /* HomePage will always use the main Theme */
 :root{
     --main-bg-color: #F9C901;
-}
+  }
 
 *{
     margin: 0;
@@ -119,6 +119,13 @@ body{height:100%;}
   justify-content: center;
   flex-direction: column;
 }
+
+/* MAIN PAGE */
+
+.mainPage{
+  background-color:#f1f1f1;
+}
+
 
 /* MAIN BEEHIVE LAYOUT */
 
@@ -238,6 +245,15 @@ body{height:100%;}
 }
 
 
+.calendar-events::-webkit-scrollbar {
+  width: 1px;
+  background-color: none;
+}
+
+.calendar-events::-webkit-scrollbar-thumb {
+  background-color: none;
+  border-radius: 10px;
+}
 /* Tasks: */
 
 .tasks-wrapper{
@@ -300,3 +316,8 @@ body{height:100%;}
   justify-content: space-around;
   width: 100%;
 }
+
+.st0{fill:#58EF89;}
+.st1{fill:#FFFFFF;}
+.st2{fill:var(--main-bg-color);}
+.st3{fill:#F7931E;}
